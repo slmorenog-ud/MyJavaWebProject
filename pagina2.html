@@ -1,0 +1,88 @@
+<!-- 20242020091 - Sergio Leonardo Moreno Granado -->
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Directorio Empresarial - Contactos</title>
+  <link rel="stylesheet" href="estilos-directorio.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="header-container">
+    <h1>Directorio Empresarial</h1>
+    <div class="nav-links">
+      <a href="pagina1.html" class="nav-button">Añadir Nueva Empresa</a>
+      <button onclick="borrarDirectorio()" class="nav-button delete">Borrar Directorio</button>
+    </div>
+  </div>
+
+  <div id="directorio-container">
+    <!-- La tabla de empresas se generará aquí -->
+  </div>
+
+  <div id="no-data-message" style="display: none;">
+    <h3>No hay empresas en el directorio.</h3>
+    <p>Ve a la página de formulario para añadir una.</p>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const empresas = JSON.parse(localStorage.getItem("directorioEmpresarial")) || [];
+      const container = document.getElementById("directorio-container");
+      const noDataMessage = document.getElementById("no-data-message");
+
+      if (empresas.length > 0) {
+        // Crear la estructura de la tabla
+        const table = document.createElement('table');
+        table.className = 'directorio-table';
+
+        // Crear el encabezado de la tabla
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Sector</th>
+              <th>Teléfono</th>
+              <th>Correo Electrónico</th>
+              <th>Tipo</th>
+              <th>Ciudad</th>
+            </tr>
+          </thead>
+        `;
+
+        // Crear el cuerpo de la tabla y llenarlo con los datos
+        const tbody = document.createElement('tbody');
+        empresas.forEach(empresa => {
+          const row = tbody.insertRow();
+          row.innerHTML = `
+            <td>${empresa.empresa}</td>
+            <td>${empresa.sector}</td>
+            <td>${empresa.telefono}</td>
+            <td>${empresa.email}</td>
+            <td><span class="badge ${empresa.tipo.toLowerCase()}">${empresa.tipo}</span></td>
+            <td>${empresa.ciudad}</td>
+          `;
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
+      } else {
+        // Mostrar mensaje si no hay datos
+        noDataMessage.style.display = "block";
+      }
+    };
+
+    function borrarDirectorio() {
+      if (confirm("¿Estás seguro de que deseas borrar TODAS las empresas del directorio? Esta acción no se puede deshacer.")) {
+        localStorage.removeItem("directorioEmpresarial");
+        alert("Directorio borrado.");
+        location.reload();
+      }
+    }
+  </script>
+
+</body>
+</html>

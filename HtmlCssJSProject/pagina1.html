@@ -1,0 +1,124 @@
+<!-- 20242020091 - Sergio Leonardo Moreno Granado -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Directorio Empresarial - Añadir Empresa</title>
+  <link rel="stylesheet" href="estilos-formulario.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="form-container">
+    <div class="form-header">
+      <h1>Directorio Empresarial</h1>
+      <p>Añadir una nueva empresa</p>
+    </div>
+
+    <form id="directorio-form">
+      
+      <div class="form-group">
+        <label for="empresa">Nombre de la Empresa:</label>
+        <input type="text" id="empresa" placeholder="Ej: Tu empresa S.A." required>
+      </div>
+
+      <div class="form-group">
+        <label for="sector">Sector:</label>
+        <div class="custom-select">
+          <select id="sector" required>
+            <option value="">Seleccione un sector</option>
+            <option value="Agricultura">Agricultura</option>
+            <option value="Manufactura">Manufactura</option>
+            <option value="Tecnología">Tecnología</option>
+            <option value="Servicios">Servicios</option>
+            <option value="Comercio">Comercio</option>
+            <option value="Construcción">Construcción</option>
+            <option value="Salud">Salud</option>
+            <option value="Educación">Educación</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <span class="custom-arrow"></span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" placeholder="Ej: +1-234-567-8901" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" placeholder="Ej: contacto@empresa.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <div class="custom-select">
+          <select id="tipo" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Cliente">Cliente</option>
+            <option value="Proveedor">Proveedor</option>
+            <option value="AmAAs">Ambos</option>
+          </select>
+          <span class="custom-arrow"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" placeholder="Ej: Bogotá D.C." required>
+      </div>
+      
+      <div class="form-buttons">
+        <button type="button" onclick="guardarEmpresa()">Guardar Empresa</button>
+        <a href="pagina2.html" class="view-button">Ver Directorio</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function guardarEmpresa() {
+      // 1. Recoger los valores de los campos
+      const empresa = document.getElementById("empresa").value.trim();
+      const sector = document.getElementById("sector").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const tipo = document.getElementById("tipo").value.trim();
+      const ciudad = document.getElementById("ciudad").value.trim();
+      
+
+      // 2. Validar que ningún campo esté vacío
+      if (!empresa || !sector || !telefono || !email || !tipo || !ciudad) {
+        alert("Por favor, complete todos los campos antes de guardar.");
+        return;
+      }
+
+      // 3. Crear el objeto de la nueva empresa
+      const nuevaEmpresa = {
+        empresa: empresa,
+        sector: sector,
+        telefono: telefono,
+        email: email,
+        tipo: tipo,
+        ciudad: ciudad
+      };
+
+      // 4. Obtener las empresas existentes de localStorage o iniciar un array vacío
+      let empresas = JSON.parse(localStorage.getItem("directorioEmpresarial")) || [];
+
+      // 5. Añadir la nueva empresa al array
+      empresas.push(nuevaEmpresa);
+
+      // 6. Guardar el array actualizado en localStorage
+      localStorage.setItem("directorioEmpresarial", JSON.stringify(empresas));
+
+      // 7. Informar al usuario y limpiar el formulario
+      alert("¡Empresa guardada con éxito!");
+      document.getElementById("directorio-form").reset();
+    }
+  </script>
+
+</body>
+</html>
